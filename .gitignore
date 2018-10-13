@@ -10,3 +10,12 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# Exclude node_modules, Js packages can be reinstalled with `npm install`
+node_modules
+
+# Exclude produced static assets
+web/public/
+
+# Exclude tern config file(s) used when editing JS
+.tern-project
