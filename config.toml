@@ -1,0 +1,6 @@
+webpack-assets-path  = "web/public/"
+webpack-fs-path = "web/public/components"
+webpack-web-path = "web/components"
+
+templates-layout-path = "web/templates/layout/"
+templates-path = "web/templates/"
