@@ -1,11 +1,12 @@
 <template>
-<v-form v-model="valid">
+<v-form ref="form">
   <v-text-field
     v-model="username"
     :rules="[rules.minusername]"
     prepend-icon="account_circle"
     label="Username"
     required
+    autofocus
     ></v-text-field>
   <v-text-field
     v-model="password"
@@ -58,7 +59,12 @@ export default {
             return (this.password == this.confirmationPassword) ? '' : 'Password does not match';
         },
         submit() {
-            console.log('Submitted!');
+            var isValid = this.$refs.form.validate() && this.password == this.confirmationPassword;
+            if (isValid) {
+                console.log('Submitted!');
+            } else {
+                console.log('No good');
+            }
         },
     },
     props: [],

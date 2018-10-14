@@ -5,6 +5,7 @@
     prepend-icon="account_circle"
     label="Username"
     required
+    autofocus
     ></v-text-field>
   <v-text-field
     v-model="password"
