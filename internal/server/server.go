@@ -6,7 +6,11 @@ import (
 	"net/http"
 
 	"github.com/PGo-Projects/tasky/internal/config"
+	"github.com/PGo-Projects/tasky/internal/public"
+	"github.com/PGo-Projects/tasky/internal/security"
 	"github.com/PGo-Projects/tplmgr"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/go-webpack/webpack"
 	"github.com/lpar/gzipped"
 	"github.com/spf13/cobra"
@@ -32,26 +36,16 @@ func setup() {
 
 func Run(cmd *cobra.Command, args []string) {
 	setup()
-	initStaticServer()
-	http.HandleFunc("/", IndexPage)
-	http.HandleFunc("/register", RegisterPage)
-	http.HandleFunc("/login", LoginPage)
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
+	security.MustSetupSecurity()
 
-func IndexPage(w http.ResponseWriter, r *http.Request) {
-	tplmgr.Render(w, "index.tmpl", nil)
-}
+	mux := chi.NewRouter()
+	mux.Use(middleware.Logger)
+	security.SetupSecurityRouter(mux)
 
-func RegisterPage(w http.ResponseWriter, r *http.Request) {
-	tplmgr.Render(w, "register.tmpl", nil)
-}
+	staticAssetsPath := http.Dir(viper.GetString(config.WebpackAssetsPathKey))
+	mux.Method(http.MethodGet, "/public/*", http.StripPrefix("/public/", gzipped.FileServer(staticAssetsPath)))
 
-func LoginPage(w http.ResponseWriter, r *http.Request) {
-	tplmgr.Render(w, "login.tmpl", nil)
-}
+	public.RegisterRoutes(mux)
 
-func initStaticServer() {
-	var staticAssetsPath = http.Dir(viper.GetString(config.WebpackAssetsPathKey))
-	http.Handle("/public/", http.StripPrefix("/public/", gzipped.FileServer(staticAssetsPath)))
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }

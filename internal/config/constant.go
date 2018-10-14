@@ -7,4 +7,8 @@ const (
 
 	TemplatesLayoutPathKey = "templates-layout-path"
 	TemplatesPathKey       = "templates-path"
+
+	CookieStoreKey  = "cookie-store-key"
+	SessionStoreKey = "session-store-key"
+	EncryptionKey   = "encryption-key"
 )
