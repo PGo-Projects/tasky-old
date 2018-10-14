@@ -5,12 +5,12 @@
     <v-spacer></v-spacer>
     
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat href="/register">
+      <v-btn flat href="/auth/register">
         <v-icon>fa fa-user-plus</v-icon>
         <span class="ml-2">Register</span>
       </v-btn>
       
-      <v-btn flat href="/login">
+      <v-btn flat href="/auth/login">
         <v-icon>fa fa-sign-in-alt</v-icon>
         <span class="ml-2">Login</span>
       </v-btn>
@@ -27,7 +27,7 @@
         </v-list-tile-content>
       </v-list-tile>
       
-      <v-list-tile href="/register">
+      <v-list-tile href="/auth/register">
         <v-list-tile-action>
           <v-icon>fa fa-user-plus</v-icon>
         </v-list-tile-action>
@@ -36,7 +36,7 @@
         </v-list-tile-content>
       </v-list-tile>
       
-      <v-list-tile href="/login">
+      <v-list-tile href="/auth/login">
         <v-list-tile-action>
           <v-icon>fa fa-sign-in-alt</v-icon>
         </v-list-tile-action>

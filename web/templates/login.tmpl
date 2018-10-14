@@ -2,8 +2,16 @@
 
 {% define "content" %}
 
-    <app></app>
+	{% with .csrf_token %}
+		<input type="hidden" id="csrf-token" value="{%.%}" />
+	{% end %}
 
-    {% asset "login.js" %}
+	{% with .error %}
+		<input type="hidden" id="error-message" value="{%.%}" />
+	{% end %}
+
+<app></app>
+
+{% asset "login.js" %}
 
 {% end %}

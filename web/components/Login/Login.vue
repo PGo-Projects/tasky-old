@@ -5,7 +5,7 @@
       <v-layout align-center>
         <v-flex xs12 sm8 offset-sm2 md6 offset-md3 lg6 offset-lg3>
           <span class="display-4">
-            <v-img src="public/assets/logo.png" max-height=175 alt="Tasky" contain class="mb-5"></v-img>
+            <v-img src="/public/assets/logo.png" max-height=175 alt="Tasky" contain class="mb-5"></v-img>
           </span>
           <login-form></login-form>
         </v-flex>
