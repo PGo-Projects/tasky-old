@@ -3,7 +3,7 @@
   <v-text-field
     v-model="username"
     :rules="[rules.minusername]"
-    prepend-icon="person"
+    prepend-icon="account_circle"
     label="Username"
     required
     ></v-text-field>
@@ -31,7 +31,7 @@
     ></v-text-field>
   
   <v-layout row>
-    <v-btn flat small dark href="/login">Already have an account?</v-btn>
+    <v-btn flat small dark href="/login">Sign in instead</v-btn>
     <v-spacer></v-spacer>
     <v-btn dark @click="submit">Register</v-btn>
   </v-layout>

@@ -2,7 +2,7 @@
 <v-form v-model="valid">
   <v-text-field
     v-model="username"
-    prepend-icon="person"
+    prepend-icon="account_circle"
     label="Username"
     required
     ></v-text-field>
