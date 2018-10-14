@@ -15,6 +15,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 module.exports = {
     entry: {
         index: 'index.js',
+		login: 'login.js',
+		register: 'register.js',
     },
     output: {
         path: path.join(__dirname, 'public', 'components'),

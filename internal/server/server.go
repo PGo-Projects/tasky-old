@@ -34,11 +34,21 @@ func Run(cmd *cobra.Command, args []string) {
 	setup()
 	initStaticServer()
 	http.HandleFunc("/", IndexPage)
+	http.HandleFunc("/register", RegisterPage)
+	http.HandleFunc("/login", LoginPage)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func IndexPage(w http.ResponseWriter, r *http.Request) {
 	tplmgr.Render(w, "index.tmpl", nil)
+}
+
+func RegisterPage(w http.ResponseWriter, r *http.Request) {
+	tplmgr.Render(w, "register.tmpl", nil)
+}
+
+func LoginPage(w http.ResponseWriter, r *http.Request) {
+	tplmgr.Render(w, "login.tmpl", nil)
 }
 
 func initStaticServer() {
