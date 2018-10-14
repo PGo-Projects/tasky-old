@@ -1,14 +1,17 @@
 {% define "title" %}Login{% end %}
 
+{% define "head-addon" %}
+{% end %}
+
 {% define "content" %}
 
-	{% with .csrf_token %}
-		<input type="hidden" id="csrf-token" value="{%.%}" />
-	{% end %}
+    {% with .csrf_token %}
+        <input type="hidden" id="csrf-token" value="{%.%}" />
+    {% end %}
 
-	{% with .error %}
-		<input type="hidden" id="error-message" value="{%.%}" />
-	{% end %}
+    {% with .error %}
+        <input type="hidden" id="error-message" value="{%.%}" />
+    {% end %}
 
 <app></app>
 
