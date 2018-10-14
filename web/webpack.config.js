@@ -17,6 +17,7 @@ module.exports = {
         index: 'index.js',
 		login: 'login.js',
 		register: 'register.js',
+		tasky: 'tasky.js',
     },
     output: {
         path: path.join(__dirname, 'public', 'components'),
