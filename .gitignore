@@ -15,7 +15,7 @@
 node_modules
 
 # Exclude produced static assets
-web/public/
+web/public/components
 
 # Exclude tern config file(s) used when editing JS
 .tern-project
