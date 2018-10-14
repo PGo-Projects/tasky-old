@@ -26,6 +26,7 @@ func setup() {
 	templateLayoutPath := viper.GetString(config.TemplatesLayoutPathKey)
 	templatePath := viper.GetString(config.TemplatesPathKey)
 	tplmgr.SetConfig(templateLayoutPath, templatePath)
+	tplmgr.SetDelimiters("{%", "%}")
 	tplmgr.MustLoadWithFuncs(funcMap)
 }
 
