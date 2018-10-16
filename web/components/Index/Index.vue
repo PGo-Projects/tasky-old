@@ -3,8 +3,15 @@
   <v-toolbar app fixed clipped-right>
     <v-toolbar-title>Tasky</v-toolbar-title>
     <v-spacer></v-spacer>
+
+	<v-toolbar-items class="hidden-sm-and-down" v-if="loggedInState === 'true'">
+	  <v-btn flat href="/auth/logout">
+        <v-icon>fa fa-sign-out-alt</v-icon>
+        <span class="ml-2">Logout</span>
+      </v-btn>
+	</v-toolbar-items>
     
-    <v-toolbar-items class="hidden-sm-and-down">
+    <v-toolbar-items class="hidden-sm-and-down" v-else>
       <v-btn flat href="/auth/register">
         <v-icon>fa fa-user-plus</v-icon>
         <span class="ml-2">Register</span>
@@ -27,23 +34,36 @@
         </v-list-tile-content>
       </v-list-tile>
       
-      <v-list-tile href="/auth/register">
-        <v-list-tile-action>
-          <v-icon>fa fa-user-plus</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Register</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+      <div v-if="loggedInState === 'true'">
+        <v-list-tile href="/auth/logout">
+          <v-list-tile-action>
+            <v-icon>fa fa-sign-out-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Logout</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </div>
+
+      <div v-else>
+        <v-list-tile href="/auth/register">
+          <v-list-tile-action>
+            <v-icon>fa fa-user-plus</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Register</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       
-      <v-list-tile href="/auth/login">
-        <v-list-tile-action>
-          <v-icon>fa fa-sign-in-alt</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Login</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+        <v-list-tile href="/auth/login">
+          <v-list-tile-action>
+            <v-icon>fa fa-sign-in-alt</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Login</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </div>
     </v-list>
   </v-navigation-drawer>
   
@@ -71,6 +91,6 @@ export default {
     }),
     methods: {
     },
-    props: [],
+    props: ['loggedInState'],
 }
 </script>

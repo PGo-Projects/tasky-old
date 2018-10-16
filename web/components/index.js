@@ -4,8 +4,13 @@ import Index from 'Index/Index.vue';
 
 import 'vuetify/dist/vuetify.min.css';
 
+const rootElement = document.getElementsByTagName('app')[0];
+const rootComponent = Vue.extend(Index);
+
 Vue.use(Vuetify);
-new Vue({
-    el: 'app',
-    render: h => h(Index),
+new rootComponent({
+    el: rootElement,
+    render: h => h(Index, {
+        props: { ...rootElement.dataset },
+    }),
 });
