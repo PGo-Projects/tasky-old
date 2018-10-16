@@ -5,15 +5,7 @@
 
 {% define "content" %}
 
-    {% with .csrf_token %}
-        <input type="hidden" id="csrf-token" value="{%.%}" />
-    {% end %}
-
-    {% with .error %}
-        <input type="hidden" id="error-message" value="{%.%}" />
-    {% end %}
-
-<app></app>
+	<app data-csrf-token="{%.csrf_token%}" data-error-message="{%.error%}"></app>
 
 {% asset "login.js" %}
 

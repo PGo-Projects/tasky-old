@@ -1,12 +1,12 @@
 <template>
 <div>
 	<div class="mb-3">
-		<v-alert v-if="formattedErrorMessage !== ''"
+		<v-alert v-if="this.errorMessage !== ''"
 			:value="true"
 			type="error"
 			outline=true
 			>
-			{{ formattedErrorMessage }}
+			{{ formattedErrorMessage() }}
 		</v-alert>
 	</div>
 	<v-form ref="form" method="post">
@@ -56,11 +56,6 @@
 </template>
 
 <script>
-var csrfToken = document.getElementById('csrf-token').value;
-var errorMessageElement = document.getElementById('error-message');
-var errorMessage = (errorMessageElement != null ? errorMessageElement.value : '');
-var formattedErrorMessage = (errorMessage !== '' ? errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1) + '.' : '');
-
 export default {
     name: 'RegisterForm',
     components: {},
@@ -68,8 +63,6 @@ export default {
         username: '',
         password: '',
         confirmationPassword: '',
-		csrfToken: csrfToken,
-		formattedErrorMessage: formattedErrorMessage,
         showPassword: false,
         showConfirmationPassword: false,
         rules: {
@@ -78,6 +71,12 @@ export default {
         }
     }),
     methods: {
+        formattedErrorMessage() {
+            if (this.errorMessage !== '') {
+                return this.errorMessage.charAt(0).toUpperCase() + this.errorMessage.slice(1) + '.';
+            }
+            return '';
+        },
         confirmPasswordMatch() {
             return (this.password == this.confirmationPassword) ? '' : 'Password does not match';
         },
@@ -85,5 +84,6 @@ export default {
 			return this.$refs.form.validate() && this.password == this.confirmationPassword;
 		},
     },
+    props: ['csrfToken', 'errorMessage'],
 }
 </script>

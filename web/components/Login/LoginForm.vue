@@ -1,12 +1,12 @@
 <template>
 <div>
 	<div class="mb-3">
-		<v-alert v-if="formattedErrorMessage !== ''"
+		<v-alert v-if="this.errorMessage !== ''"
 			:value="true"
        		type="error"
         	outline=true
 	    	>
-			{{ formattedErrorMessage }}
+			{{ formattedErrorMessage() }}
 		</v-alert>
 	</div>
 	<v-form method="post">
@@ -41,26 +41,25 @@
 </template>
 
 <script>
-var csrfToken = document.getElementById('csrf-token').value;
-var errorMessageElement = document.getElementById('error-message');
-var errorMessage = (errorMessageElement != null ? errorMessageElement.value : '');
-var formattedErrorMessage = (errorMessage !== '' ? errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1) + '.' : '');
-
 export default {
     name: 'LoginForm',
     components: {},
     data: () => ({
         username: "",
         password: "",
-        csrfToken: csrfToken,
-        formattedErrorMessage: formattedErrorMessage,
         showPassword: false,
     }),
     methods: {
+        formattedErrorMessage() {
+            if (this.errorMessage !== '') {
+                return this.errorMessage.charAt(0).toUpperCase() + this.errorMessage.slice(1) + '.';
+            }
+            return '';
+        },
         submit() {
             console.log('Submitted!');
         },
     },
-    props: [],
+    props: ['csrfToken', 'errorMessage'],
 }
 </script>

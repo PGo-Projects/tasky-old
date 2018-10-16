@@ -4,8 +4,13 @@ import Login from 'Login/Login.vue';
 
 import 'vuetify/dist/vuetify.min.css';
 
+const rootElement = document.getElementsByTagName('app')[0];
+const rootComponent = Vue.extend(Login);
+
 Vue.use(Vuetify);
-new Vue({
+new rootComponent({
     el: 'app',
-    render: h => h(Login),
+    render: h => h(Login, {
+        props: { ...rootElement.dataset },
+    }),
 });

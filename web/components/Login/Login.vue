@@ -7,7 +7,7 @@
           <span class="display-4">
             <v-img src="/public/assets/logo.png" max-height=175 alt="Tasky" contain class="mb-5"></v-img>
           </span>
-          <login-form></login-form>
+          <login-form :csrf-token="this.csrfToken" :error-message="this.errorMessage"></login-form>
         </v-flex>
       </v-layout>
     </v-container>
@@ -28,6 +28,6 @@ export default {
     }),
     methods: {
     },
-    props: [],
+    props: ['csrfToken', 'errorMessage'],
 }
 </script>

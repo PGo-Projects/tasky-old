@@ -5,19 +5,15 @@
 
 {% define "content" %}
 
-    {% with .csrf_token %}
-        <input type="hidden" id="csrf-token" value="{%.%}" />
-    {% end %}
+	{% $errorMessage := "" %}
 
     {% with .errors %}
         {% with (index . "") %}
-            {% range . %}
-                <input type="hidden" id="error-message" value="{%.%}" />
-            {% end %}
+			{% $errorMessage = (index . 0) %}
         {% end %}
     {% end %}
 
-    <app></app>
+	<app data-csrf-token="{%.csrf_token%}" data-error-message="{%$errorMessage%}"></app>
 
     {% asset "register.js" %}
 
