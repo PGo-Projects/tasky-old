@@ -35,7 +35,7 @@
 		    v-model="confirmationPassword"
 		    :append-icon="showConfirmationPassword ? 'visibility_off' : 'visibility'"
 		    :type="showConfirmationPassword ? 'text' : 'password'"
-		    :error-messages='confirmPasswordMatch()'
+		    :error-messages="confirmPasswordMatch()"
 		    prepend-icon="lock"
 		    label="Confirmation Password"
 			name="confirm_password"
