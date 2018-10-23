@@ -42,6 +42,7 @@
   ],
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "vuedraggable": "^2.16.0",
     "vuetify": "^1.2.9"
   }
 }
