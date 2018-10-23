@@ -1,10 +1,9 @@
 <template>
-<v-card dark class="mb-1" v-if="task.action == DISPLAY_ACTION">
+<v-card dark v-if="task.action == DISPLAY_ACTION">
     <v-container fluid>
       <v-layout row>
         <v-flex column xs1>
           <v-checkbox></v-checkbox>
-          <v-icon class="drag-cursor" @click="">drag_handle</v-icon>
         </v-flex>
 
         <v-flex xs10>
@@ -30,7 +29,7 @@
     </v-container>
 </v-card>
 
-<v-card dark class="mb-1" v-else-if="task.action == SAVE_ACTION || task.action == CREATE_ACTION">
+<v-card dark v-else-if="task.action == SAVE_ACTION || task.action == CREATE_ACTION">
   <v-container fluid>
     <v-form ref="form" method="post">
       <v-text-field
@@ -115,9 +114,3 @@ export default {
     props: ['task'],
 }
 </script>
-
-<style>
-.drag-cursor {
-    cursor: move !important;
-}
-</style>
