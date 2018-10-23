@@ -84,14 +84,21 @@ export default {
     data: () => ({
         drawer: null,
         tasks: [
-            {title: 'testing', time: '1:00PM', description: 'This is a test task', action: 'display'},
-            {title: 'feed cat', time: '2:00PM', description: 'Got to feed the cat!', action: 'display'},
-            {title: 'wash clothing', time: '3:00PM', description: 'This needs to be saved!', action: 'create'},
+            {index: 0, title: 'testing', time: '1:00PM', description: 'This is a test task', action: 'display'},
+            {index: 3, title: 'feed cat', time: '2:00PM', description: 'Got to do it soon!', action: 'display'},
+            {index: 4, title: 'wash dish', time: '3:00PM', description: 'Needs to be saved!', action: 'create'},
         ],
     }),
     methods: {
         newTask() {
-            var emptyTask = {title: '', time: '', description: '', action: TASK_CREATE_ACTION, firstTime: true};
+            var emptyTask = {
+                index: -1,
+                title: '',
+                time: '',
+                description: '',
+                action: TASK_CREATE_ACTION,
+                firstTime: true
+            };
             this.tasks.unshift(emptyTask);
         },
     },
