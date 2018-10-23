@@ -68,16 +68,19 @@
     <v-content>
         <task-list :tasks="this.tasks"></task-list>
     </v-content>
+
+    <footer-component></footer-component>
   </v-app>
 </template>
 
 <script>
 import {CREATE_ACTION as TASK_CREATE_ACTION} from 'Task/Task.vue';
 import TaskList from 'TaskList/TaskList.vue';
+import FooterComponent from 'Footer/Footer.vue';
 
 export default {
     name: 'Tasky',
-    components: {TaskList},
+    components: {TaskList, FooterComponent},
     data: () => ({
         drawer: null,
         tasks: [
