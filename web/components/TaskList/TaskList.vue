@@ -1,6 +1,9 @@
 <template>
-<draggable :list="this.tasks" :options="dragOptions" :component-data="getComponentData()">
-  <task class="task" v-for="task in this.tasks" :task="task">
+<draggable :list="this.tasks" :options="dragOptions" @change="change">
+  <task class="task" v-for="task in this.tasks"
+        :task="task"
+        :total-num-of-tasks="size"
+        :missing-task-indices="missingTaskIndices">
   </task>
 </draggable>
 </template>
@@ -18,18 +21,17 @@ export default {
                 animation: 0,
             }
         },
+        size() {
+            return this.tasks.length;
+        },
     },
     data: () => ({
+        missingTaskIndices: [1, 2],
     }),
     methods: {
-        getComponentData() {
-            return {
-                on: {
-                    update(event, argument) {
-                        console.log(`Moved from ${event.oldIndex} to ${event.newIndex}`);
-                    },
-                }
-            }
+        change(event) {
+            console.log(`Moved from ${event.moved.oldIndex} to ${event.moved.newIndex}`);
+            console.log(event.moved.element);
         },
     },
     props: ['tasks'],

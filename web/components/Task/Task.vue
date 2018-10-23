@@ -15,6 +15,7 @@
           </v-card-title>
           
           <v-card-text>{{ task.description }}</v-card-text>
+          <input type="hidden" :value="task.index" />
         </v-flex>
         
         <v-flex column xs1 align-content-space-around>
@@ -55,7 +56,8 @@
         auto-grow
         required
         ></v-textarea>
-      
+      <input type="hidden" :value="task.index" />
+
       <v-layout row>
         <v-btn flat dark @click.stop="createOrSave();">{{ task.action }}</v-btn>
         <v-spacer></v-spacer>
@@ -99,6 +101,15 @@ export default {
                 this.task.firstTime = false;
                 return this.$refs.form.validate();
             }
+
+            if (!this.task.index >= 0) {
+                if (this.missingTaskIndices.length > 0) {
+                    this.task.index = this.missingTaskIndices.shift();
+                } else {
+                    this.task.index = this.totalNumOfTasks - 1;
+                    this.totalNumOfTasks++;
+                }
+            }
         },
         edit() {
             // This would make the card a form the user can edit and then *save*
@@ -108,9 +119,10 @@ export default {
             return (this.task.firstTime || value !== '') ? '' : 'Field cannot be empty';
         },
         remove() {
+            this.missingTaskIndices.unshift(this.task.index)
             this.task.action = DELETE_ACTION;
         },
     },
-    props: ['task'],
+    props: ['task', 'missingTaskIndices', 'totalNumOfTasks'],
 }
 </script>
