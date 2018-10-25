@@ -2,6 +2,7 @@ package security
 
 import (
 	"encoding/base64"
+	"net/http"
 
 	asecurity "github.com/PGo-Projects/authboss-security"
 	"github.com/PGo-Projects/tasky/internal/config"
@@ -13,7 +14,7 @@ import (
 
 var schemaDec = schema.NewDecoder()
 
-func MustSetupSecurity() {
+func MustSetup() {
 	usernameRule := asecurity.Rules{
 		FieldName: "username", Required: true,
 		MinLength: 4,
@@ -24,7 +25,8 @@ func MustSetupSecurity() {
 	}
 
 	authBossHTTPBodyReader := asecurity.NewHTTPBodyReader(usernameRule, passwordRule)
-	authBossConfig := asecurity.NewAuthBossConfigBuilder("tasky", authBossHTTPBodyReader).
+	appName := viper.GetString(config.AppNameKey)
+	authBossConfig := asecurity.NewAuthBossConfigBuilder(appName, authBossHTTPBodyReader).
 		WithRootURL("http://lvh.me:8080").
 		WithAuthLoginOK("/tasky").
 		WithRegisterOK("/tasky").
@@ -32,7 +34,7 @@ func MustSetupSecurity() {
 
 	sessionStore, cookieStore := mustSetupSessionCookieStores()
 
-	asecurity.MustSetupAuthbossWithStores(authBossConfig, "tasky", sessionStore, cookieStore)
+	asecurity.MustSetupAuthbossWithStores(authBossConfig, appName, sessionStore, cookieStore)
 	schemaDec.IgnoreUnknownKeys(true)
 }
 
@@ -53,7 +55,8 @@ func mustSetupSessionCookieStores() (asecurity.SessionStorer, asecurity.CookieSt
 		panic(err)
 	}
 
-	sessionStore := asecurity.NewSessionStorerBuilder("tasky", sessionStoreKey, encryptionKey).
+	appName := viper.GetString(config.AppNameKey)
+	sessionStore := asecurity.NewSessionStorerBuilder(appName, sessionStoreKey, encryptionKey).
 		WithMaxAge(3600).
 		WithSecure(false).
 		WithHttpOnly(false).
@@ -74,4 +77,8 @@ func SetupSecurityRouter(mux chi.Router) {
 		Force2FA:            false,
 	}
 	asecurity.RegisterProtectedRoutes(mux, config, tasky.ProtectedRoutes)
+}
+
+func GetUser(r *http.Request) (string, error) {
+	return asecurity.GetCurrentUser(r)
 }
