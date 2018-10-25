@@ -1,3 +1,5 @@
+app-name = "tasky"
+
 webpack-assets-path  = "web/public/"
 webpack-fs-path = "web/public/components"
 webpack-web-path = "web/components"
