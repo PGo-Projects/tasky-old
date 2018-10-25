@@ -119,10 +119,10 @@ export default {
             return (this.task.firstTime || value !== '') ? '' : 'Field cannot be empty';
         },
         remove() {
-            this.missingTaskIndices.unshift(this.task.index)
+            this.sendTask('/tasky/remove_task');
             this.task.action = DELETE_ACTION;
         },
     },
-    props: ['task', 'missingTaskIndices', 'totalNumOfTasks'],
+    props: ['csrfToken', 'task', 'username'],
 }
 </script>
