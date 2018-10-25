@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import qs from 'qs';
+
 export const CREATE_ACTION = 'create';
 export const DELETE_ACTION = 'delete';
 export const DISPLAY_ACTION = 'display';
@@ -122,12 +124,43 @@ export default {
             // This would make the card a form the user can edit and then *save*
             this.task.action = SAVE_ACTION;
         },
-        emptyField(value) {
-            return (this.task.firstTime || value !== '') ? '' : 'Field cannot be empty';
-        },
         remove() {
             this.sendTask('/tasky/remove_task');
             this.task.action = DELETE_ACTION;
+        },
+        success() {
+            if (!response.ok) {
+                alert('There was a issue sending the data to the server.  Please try again later.');
+                return
+            }
+            return response;
+        },
+        failure() {
+            alert('There was an issue sending the data to the server.  Please try again later.');
+        },
+        sendTask(url) {
+            const data = {
+                index: this.task.index,
+                title: this.task.title,
+                time: this.task.time,
+                description: this.task.description,
+                action: DISPLAY_ACTION,
+                csrf_token: this.csrfToken,
+                username: this.username,
+            };
+
+            fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: qs.stringify(data),
+            });
+        },
+        emptyField(value) {
+            return (this.task.firstTime || value !== '') ? '' : 'Field cannot be empty';
         },
     },
     props: ['csrfToken', 'task', 'username'],
