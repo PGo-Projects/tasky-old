@@ -8,7 +8,7 @@
 
 {% define "content" %}
 
-    <app></app>
+    <app data-csrf-token="{%.csrf_token%}" data-username="{%.current_user_name%}"></app>
 
     {% asset "tasky.js" %}
 
