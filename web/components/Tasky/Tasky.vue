@@ -66,7 +66,7 @@
 	</v-toolbar>
 
     <v-content>
-        <task-list :tasks="this.tasks"></task-list>
+        <task-list :tasks="this.tasks" :csrfToken="this.csrfToken" :username="this.username"></task-list>
     </v-content>
 
     <footer-component></footer-component>
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import {CREATE_ACTION as TASK_CREATE_ACTION} from 'Task/Task.vue';
+import {CREATE_ACTION as TASK_CREATE_ACTION, DISPLAY_ACTION as TASK_DISPLAY_ACTION} from 'Task/Task.vue';
 import TaskList from 'TaskList/TaskList.vue';
 import FooterComponent from 'Footer/Footer.vue';
 
@@ -83,12 +83,21 @@ export default {
     components: {TaskList, FooterComponent},
     data: () => ({
         drawer: null,
-        tasks: [
-            {index: 0, title: 'testing', time: '1:00PM', description: 'This is a test task', action: 'display'},
-            {index: 3, title: 'feed cat', time: '2:00PM', description: 'Got to do it soon!', action: 'display'},
-            {index: 4, title: 'wash dish', time: '3:00PM', description: 'Needs to be saved!', action: 'create'},
-        ],
+        tasks: [],
     }),
+    async mounted() {
+        const response = await fetch('/tasky/get_tasks');
+        if (response.ok) {
+            this.tasks = await response.json();
+        } else {
+            alert('There was a problem communicating with the server, please try again later.');
+            return
+        }
+        
+        if (this.tasks === null) {
+            this.tasks = [];
+        }
+    },
     methods: {
         newTask() {
             var emptyTask = {
@@ -102,6 +111,6 @@ export default {
             this.tasks.unshift(emptyTask);
         },
     },
-    props: [],
+    props: ['csrfToken', 'username'],
 }
 </script>
