@@ -94,21 +94,28 @@ export default {
                 this.task.action = DISPLAY_ACTION;
             }
         },
-        createOrSave() {
-            if (this.task.title !== '' && this.task.time !== '' && this.task.description !== '') {
-                this.task.action = DISPLAY_ACTION;
-            } else {
-                this.task.firstTime = false;
-                return this.$refs.form.validate();
+        async createOrSave() {
+            // this.task.firstTime was set to True because we want to avoid the empty field check
+            // when the form is first created.  Setting it to false because that's no longer the case.
+            this.task.firstTime = false;
+            if (!this.$refs.form.validate()) {
+                return false;
             }
-
-            if (!this.task.index >= 0) {
-                if (this.missingTaskIndices.length > 0) {
-                    this.task.index = this.missingTaskIndices.shift();
+            
+            if (this.task.action == CREATE_ACTION) {
+                const response = await fetch('/tasky/get_missing_task_indices');
+                const data = await response.json();
+                if (data.length > 0) {
+                    this.task.index = data.shift();
                 } else {
-                    this.task.index = this.totalNumOfTasks - 1;
-                    this.totalNumOfTasks++;
+                    alert('There was a problem communicating with the server.  Please try again later.')
                 }
+                this.sendTask('/tasky/create_task');
+                this.task.action = DISPLAY_ACTION;
+            }
+            else if (this.task.action == SAVE_ACTION) {
+                this.sendTask('/tasky/update_task');
+                this.task.action = DISPLAY_ACTION;
             }
         },
         edit() {
