@@ -1,6 +1,8 @@
 package config
 
 const (
+	AppNameKey = "app-name"
+
 	WebpackAssetsPathKey = "webpack-assets-path"
 	WebpackFsPathKey     = "webpack-fs-path"
 	WebpackWebPathKey    = "webpack-web-path"
