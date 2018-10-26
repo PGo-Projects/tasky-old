@@ -7,6 +7,8 @@ import (
 
 	"github.com/PGo-Projects/tasky/internal/config"
 	"github.com/PGo-Projects/tasky/internal/database"
+	"github.com/PGo-Projects/tasky/internal/security"
+	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	"github.com/go-chi/chi"
 	"github.com/gorilla/schema"
@@ -50,6 +52,42 @@ func RegisterRoutes(mux chi.Router) {
 }
 
 func getTasks(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	user, err := security.GetUser(r)
+	if badRequest(w, err) {
+		return
+	}
+
+	var queryResult []task
+	err = DB.Tasks.Find(bson.M{"username": user}).All(&queryResult)
+	if err == mgo.ErrNotFound {
+		queryResult = []task{}
+	} else if badRequest(w, err) {
+		return
+	}
+
+	var ti taskIndices
+	err = DB.TaskIndices.Find(bson.M{"username": user}).One(&ti)
+	if badRequest(w, err) {
+		return
+	}
+
+	sortedMap := make(map[int]task)
+	for _, t := range queryResult {
+		sortedMap[t.Index] = t
+	}
+
+	var sortedTasks []task
+	for _, indexKey := range ti.SortedTaskIndices {
+		sortedTasks = append(sortedTasks, sortedMap[indexKey])
+	}
+
+	response, err := json.Marshal(sortedTasks)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+	}
+	w.Write(response)
 }
 
 func getMissingTaskIndices(w http.ResponseWriter, r *http.Request) {
