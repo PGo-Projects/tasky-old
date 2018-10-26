@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+var decoder *schema.Decoder
 var DB *database.TaskyStorage
 
 type task struct {
