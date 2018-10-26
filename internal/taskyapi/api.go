@@ -29,6 +29,13 @@ type task struct {
 	Action string `json:"action" bson:"action"`
 }
 
+type taskIndexChangeInfo struct {
+	Index    int    `json:"index" bson:"index"`
+	From     int    `json:"from" bson:"from"`
+	To       int    `json:"to" bson:"to"`
+	Username string `json:"username" bson:"username"`
+}
+
 type taskIndices struct {
 	Username           string `json:"username" bson:"username"`
 	MissingTaskIndices []int  `json:"missingIndices" bson:"missingIndices"`
@@ -177,7 +184,34 @@ func updateTaskContent(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateTaskPosition(w http.ResponseWriter, r *http.Request) {
-	// Update database with new position of task
+	w.Header().Set("Content-Type", "application/json")
+	err := r.ParseForm()
+	if badRequest(w, err) {
+		return
+	}
+
+	var t taskIndexChangeInfo
+	err = decoder.Decode(&t, r.Form)
+	if badRequest(w, err) {
+		return
+	}
+
+	var ti taskIndices
+	err = DB.TaskIndices.Find(bson.M{"username": t.Username}).One(&ti)
+	if badRequest(w, err) {
+		return
+	}
+	ti.SortedTaskIndices = append(ti.SortedTaskIndices[:t.From], ti.SortedTaskIndices[t.From+1:]...)
+	insertTaskIndex(&ti.SortedTaskIndices, t.To, t.Index)
+
+	err = DB.TaskIndices.Update(
+		bson.M{"username": t.Username},
+		bson.M{"$set": bson.M{"sortedIndices": ti.SortedTaskIndices}},
+	)
+	if badRequest(w, err) {
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func removeTask(w http.ResponseWriter, r *http.Request) {
