@@ -8,6 +8,7 @@ import (
 	"github.com/PGo-Projects/tasky/internal/config"
 	"github.com/PGo-Projects/tasky/internal/public"
 	"github.com/PGo-Projects/tasky/internal/security"
+	"github.com/PGo-Projects/tasky/internal/taskyapi"
 	"github.com/PGo-Projects/tplmgr"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -36,7 +37,8 @@ func setup() {
 
 func Run(cmd *cobra.Command, args []string) {
 	setup()
-	security.MustSetupSecurity()
+	security.MustSetup()
+	taskyapi.Setup()
 
 	mux := chi.NewRouter()
 	mux.Use(middleware.Logger)
@@ -46,6 +48,7 @@ func Run(cmd *cobra.Command, args []string) {
 	mux.Method(http.MethodGet, "/public/*", http.StripPrefix("/public/", gzipped.FileServer(staticAssetsPath)))
 
 	public.RegisterRoutes(mux)
+	taskyapi.RegisterRoutes(mux)
 
 	log.Fatal(http.ListenAndServe(":8080", mux))
 }
