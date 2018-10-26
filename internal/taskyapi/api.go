@@ -158,7 +158,22 @@ func createTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateTaskContent(w http.ResponseWriter, r *http.Request) {
-	// Update database with new content of task
+	w.Header().Set("Content-Type", "application/json")
+	err := r.ParseForm()
+	if badRequest(w, err) {
+		return
+	}
+
+	var t task
+	err = decoder.Decode(&t, r.Form)
+	if badRequest(w, err) {
+		return
+	}
+	err = DB.Tasks.Update(bson.M{"username": t.Username, "index": t.Index}, t)
+	if badRequest(w, err) {
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func updateTaskPosition(w http.ResponseWriter, r *http.Request) {
