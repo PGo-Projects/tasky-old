@@ -91,6 +91,32 @@ func getTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func getMissingTaskIndices(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	user, err := security.GetUser(r)
+	if badRequest(w, err) {
+		return
+	}
+
+	var ti taskIndices
+	err = DB.TaskIndices.Find(bson.M{"username": user}).One(&ti)
+	if err == mgo.ErrNotFound {
+		ti = taskIndices{
+			Username:           user,
+			MissingTaskIndices: []int{0},
+			SortedTaskIndices:  []int{},
+		}
+		err = DB.TaskIndices.Insert(ti)
+	}
+	if badRequest(w, err) {
+		return
+	}
+
+	response, err := json.Marshal(ti.MissingTaskIndices)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+	}
+	w.Write(response)
 }
 
 func createTask(w http.ResponseWriter, r *http.Request) {
