@@ -1,6 +1,7 @@
 package taskyapi
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/PGo-Projects/tasky/internal/database"
 	"github.com/globalsign/mgo/bson"
 	"github.com/go-chi/chi"
+	"github.com/gorilla/schema"
 	"github.com/spf13/viper"
 )
 
@@ -33,6 +35,8 @@ type taskIndices struct {
 func Setup() {
 	appName := viper.GetString(config.AppNameKey)
 	DB = database.NewTaskyStorage(appName)
+	decoder = schema.NewDecoder()
+	decoder.IgnoreUnknownKeys(true)
 }
 
 func RegisterRoutes(mux chi.Router) {
@@ -52,6 +56,40 @@ func getMissingTaskIndices(w http.ResponseWriter, r *http.Request) {
 }
 
 func createTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	err := r.ParseForm()
+	if badRequest(w, err) {
+		return
+	}
+
+	var t task
+	err = decoder.Decode(&t, r.Form)
+	if badRequest(w, err) {
+		return
+	}
+	err = DB.Tasks.Insert(t)
+	if badRequest(w, err) {
+		return
+	}
+
+	var ti taskIndices
+	err = DB.TaskIndices.Find(bson.M{"username": t.Username}).One(&ti)
+	if badRequest(w, err) {
+		return
+	}
+	removeTaskIndexIfExists(&ti.MissingTaskIndices, t.Index)
+	insertTaskIndex(&ti.SortedTaskIndices, 0, t.Index)
+	if len(ti.MissingTaskIndices) == 0 {
+		insertTaskIndexSorted(&ti.MissingTaskIndices, len(ti.SortedTaskIndices))
+	}
+	err = DB.TaskIndices.Update(
+		bson.M{"username": t.Username},
+		bson.M{"$set": bson.M{"missingIndices": ti.MissingTaskIndices, "sortedIndices": ti.SortedTaskIndices}},
+	)
+	if badRequest(w, err) {
+		return
+	}
+	w.WriteHeader(http.StatusOK)
 }
 
 func updateTaskContent(w http.ResponseWriter, r *http.Request) {
