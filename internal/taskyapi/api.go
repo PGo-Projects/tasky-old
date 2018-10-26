@@ -77,7 +77,9 @@ func getTasks(w http.ResponseWriter, r *http.Request) {
 
 	var ti taskIndices
 	err = DB.TaskIndices.Find(bson.M{"username": user}).One(&ti)
-	if badRequest(w, err) {
+	if err == mgo.ErrNotFound {
+		ti = taskIndices{}
+	} else if badRequest(w, err) {
 		return
 	}
 
