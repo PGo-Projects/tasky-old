@@ -10,6 +10,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import qs from 'qs';
 import Task from 'Task/Task.vue';
 
 export default {
@@ -26,16 +27,26 @@ export default {
     }),
     methods: {
         change(event) {
-            console.log(`Moved from ${event.moved.oldIndex} to ${event.moved.newIndex}`);
-            console.log(event.moved.element);
+            const data = {
+                index: event.moved.element.index,
+                from: event.moved.oldIndex,
+                to: event.moved.newIndex,
+                csrf_token: this.csrfToken,
+                username: this.username,
+            };
+
+            fetch('/tasky/update_task_pos', {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: qs.stringify(data),
+            });
         },
     },
     props: ['csrfToken', 'tasks', 'username'],
-    watch: {
-        tasks(newValue, oldValue) {
-            console.log(newValue);
-        },
-    },
 }
 </script>
 
