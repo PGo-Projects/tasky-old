@@ -1,6 +1,8 @@
 package database
 
 import (
+	"time"
+
 	"github.com/PGo-Projects/output"
 	"github.com/globalsign/mgo"
 )
@@ -22,7 +24,8 @@ type DBManager struct {
 
 func mustInitDBManager(addresses ...string) *DBManager {
 	session, err := mgo.DialWithInfo(&mgo.DialInfo{
-		Addrs: addresses,
+		Addrs:   addresses,
+		Timeout: 5 * time.Second,
 	})
 
 	if err != nil {
