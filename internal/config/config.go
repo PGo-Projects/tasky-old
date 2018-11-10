@@ -8,6 +8,7 @@ import (
 )
 
 var Filename string
+var DevRun bool
 
 func Init() {
 	if Filename != "" {

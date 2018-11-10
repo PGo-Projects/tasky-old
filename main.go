@@ -17,7 +17,10 @@ var (
 )
 
 func init() {
-	ServerCmd.PersistentFlags().StringVar(&config.Filename, "config", "", "config file (default is config.toml)")
+	ServerCmd.PersistentFlags().StringVar(&config.Filename, "config", "",
+		"config file (default is config.toml)")
+	ServerCmd.PersistentFlags().BoolVar(&config.DevRun, "dev", false,
+		"Run the server on a dev machine")
 	cobra.OnInitialize(config.Init)
 }
 
