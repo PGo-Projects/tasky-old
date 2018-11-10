@@ -1,6 +1,7 @@
 package database
 
 import (
+	"github.com/PGo-Projects/output"
 	"github.com/globalsign/mgo"
 )
 
@@ -10,6 +11,7 @@ var (
 
 func init() {
 	if Manager == nil {
+		output.Println("Initializing MongoDB connection...", output.BLUE)
 		Manager = mustInitDBManager("127.0.0.1:27017")
 	}
 }

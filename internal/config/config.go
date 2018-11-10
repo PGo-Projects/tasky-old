@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 
-	"github.com/PGo-Projects/tasky/internal/output"
+	"github.com/PGo-Projects/output"
 	"github.com/spf13/viper"
 )
 
@@ -19,7 +19,7 @@ func Init() {
 	}
 
 	if err := viper.ReadInConfig(); err != nil {
-		output.Error(err.Error())
+		output.Error(err)
 		os.Exit(1)
 	}
 }

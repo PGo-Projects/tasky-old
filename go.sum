@@ -4,6 +4,8 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/PGo-Projects/authboss-security v0.0.0-20181025132111-e16f65cbc77c h1:ush/hNAbboYT0mrkRL6CnKWIxGwU97JHq6s3wHaeXp0=
 github.com/PGo-Projects/authboss-security v0.0.0-20181025132111-e16f65cbc77c/go.mod h1:PrI3P8d3FI/R7UVByybL0O+osILZ67x8hWsw5d6FowM=
+github.com/PGo-Projects/output v0.0.0-20181030161838-eb5f9fd060a4 h1:Mxz1xpGy39ki7vcVPtChtGHd8TCPOCREYFqTaTbMj2c=
+github.com/PGo-Projects/output v0.0.0-20181030161838-eb5f9fd060a4/go.mod h1:sFKzl/RKdoOKcqPo9SWoLHacqsnd4oe9dcvYtinV69Q=
 github.com/PGo-Projects/tplmgr v0.0.0-20181013210842-530d1e5a8af3 h1:g85o3U4Te+ENlGJoC0NXzPW8x7gusMsydOxji9yT9r0=
 github.com/PGo-Projects/tplmgr v0.0.0-20181013210842-530d1e5a8af3/go.mod h1:C4jEWKEXT7Klzt38D0L096rq1NmKXInRUhZjyvzR3/Y=
 github.com/buger/goterm v0.0.0-20180423150900-6d19e6a8df12 h1:aZVdiV35VTHoMJnL2GcJFxuedXBJUJx5YRw1sif1XN4=
@@ -71,6 +73,8 @@ golang.org/x/oauth2 v0.0.0-20181003184128-c57b0facaced h1:4oqSq7eft7MdPKBGQK11X9
 golang.org/x/oauth2 v0.0.0-20181003184128-c57b0facaced/go.mod h1:N/0e6XlmueqKjAGxoOufVs8QHGRruUQn6yWY3a++T0U=
 golang.org/x/sys v0.0.0-20180906133057-8cf3aee42992 h1:BH3eQWeGbwRU2+wxxuuPOdFBmaiBH81O8BugSjHeTFg=
 golang.org/x/sys v0.0.0-20180906133057-8cf3aee42992/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+golang.org/x/sys v0.0.0-20181030150119-7e31e0c00fa0 h1:biUuj9O+0+XckRUCDzjoOGm6yFV5c0IHbm1ODP3e4Zw=
+golang.org/x/sys v0.0.0-20181030150119-7e31e0c00fa0/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 google.golang.org/appengine v1.2.0/go.mod h1:xpcJRLb0r/rnEns0DIKYYv+WjYCduHsrkT7/EB5XEv4=

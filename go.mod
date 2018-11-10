@@ -2,6 +2,7 @@ module github.com/PGo-Projects/tasky
 
 require (
 	github.com/PGo-Projects/authboss-security v0.0.0-20181025132111-e16f65cbc77c
+	github.com/PGo-Projects/output v0.0.0-20181030161838-eb5f9fd060a4
 	github.com/PGo-Projects/tplmgr v0.0.0-20181013210842-530d1e5a8af3
 	github.com/buger/goterm v0.0.0-20180423150900-6d19e6a8df12
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8

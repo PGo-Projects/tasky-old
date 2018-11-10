@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
+	"github.com/PGo-Projects/output"
 	"github.com/PGo-Projects/tasky/internal/config"
-	"github.com/PGo-Projects/tasky/internal/output"
 	"github.com/PGo-Projects/tasky/internal/server"
 	"github.com/spf13/cobra"
 )
@@ -23,7 +23,7 @@ func init() {
 
 func main() {
 	if err := ServerCmd.Execute(); err != nil {
-		output.Error(err.Error())
+		output.Error(err)
 		os.Exit(1)
 	}
 }
