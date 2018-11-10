@@ -3,8 +3,11 @@ package server
 import (
 	"html/template"
 	"log"
+	"net"
 	"net/http"
+	"os"
 
+	"github.com/PGo-Projects/output"
 	"github.com/PGo-Projects/tasky/internal/config"
 	"github.com/PGo-Projects/tasky/internal/public"
 	"github.com/PGo-Projects/tasky/internal/security"
@@ -17,6 +20,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
+
+const SOCK = "/tmp/tasky.sock"
 
 func setup() {
 	webpack.Plugin = "manifest"
@@ -50,5 +55,19 @@ func Run(cmd *cobra.Command, args []string) {
 	public.RegisterRoutes(mux)
 	taskyapi.RegisterRoutes(mux)
 
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	if config.DevRun {
+		output.Println("Attempting to run on localhost...", output.BLUE)
+		log.Fatal(http.ListenAndServe(":8080", mux))
+	} else {
+		os.Remove(SOCK)
+		unixListener, err := net.Listen("unix", SOCK)
+		if err != nil {
+			output.Error(err)
+		}
+		os.Chmod(SOCK, 0666)
+		defer unixListener.Close()
+
+		output.Println("Attempting to run on unix socket...", output.BLUE)
+		log.Fatal(http.Serve(unixListener, mux))
+	}
 }
